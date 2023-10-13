@@ -1,4 +1,4 @@
-# Terraform Examples
+# Composite Alarms Demo
 
 This directory contains an examples for using AWS Composite Alarms with Terraform.
 
