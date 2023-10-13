@@ -1,4 +1,4 @@
-# terraform
+# Terraform Examples
 
 This directory contains a set of examples for using various cloud services with Terraform.
 
