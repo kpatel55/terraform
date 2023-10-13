@@ -1,15 +1,15 @@
 # terraform
 
-List of terraform scripts. To run a particular script, cd into that directory and run:
+This directory contains a set of examples for using various cloud services with Terraform.
+
+To run any example, clone the repository and run `terraform apply` within the example's own directory.
+
+For example:
 
 ```bash
-terraform init
-
-terraform plan
-
+git clone https://github.com/kpatel55/terraform.git
+cd alarms-demo
 terraform apply
 ```
 
-To delete resources, run:
-
-`terraform destroy`
+To delete resources, run `terraform destroy` in the same directory you ran `terraform apply`.
