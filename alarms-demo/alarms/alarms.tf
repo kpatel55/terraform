@@ -37,7 +37,7 @@ resource "aws_cloudwatch_metric_alarm" "high_net_out" {
 output "alarms_out" {
   value = [
     aws_cloudwatch_metric_alarm.high_cpu.alarm_name,
-    aws_cloudwatch_metric_alarm.high_net_out.alarm_name,
-    aws_cloudwatch_metric_alarm.high_disk_read.alarm_name
+    aws_cloudwatch_metric_alarm.high_disk_read.alarm_name,
+    aws_cloudwatch_metric_alarm.high_net_out.alarm_name
   ]
 }
