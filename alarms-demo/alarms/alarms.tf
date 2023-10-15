@@ -1,43 +1,27 @@
-resource "aws_cloudwatch_metric_alarm" "high_cpu" {
-  alarm_name = "high_cpu_alarm"
-  comparison_operator = var.comparison_operator
-  evaluation_periods = var.evaluation_periods
-  metric_name = "CPUUtilization"
-  namespace = var.namespace
-  period = var.period
-  statistic = var.statistic
-  threshold = var.threshold
-  alarm_description = "EC2 high CPU utilization metric alarm"
+locals {
+  metric_names = toset([
+    "CPUUtilization",
+    "DiskReadOps",
+    "NetworkOut"
+  ])
 }
 
-resource "aws_cloudwatch_metric_alarm" "high_disk_read" {
-  alarm_name = "high_disk_read_alarm"
-  comparison_operator = var.comparison_operator
-  evaluation_periods = var.evaluation_periods
-  metric_name = "DiskReadOps"
-  namespace = var.namespace
-  period = var.period
-  statistic = var.statistic
-  threshold = var.threshold
-  alarm_description = "EC2 high disk read metric alarm"
-}
+resource "aws_cloudwatch_metric_alarm" "metric_alarms" {
+  for_each = local.metric_names
 
-resource "aws_cloudwatch_metric_alarm" "high_net_out" {
-  alarm_name = "high_net_out_alarm"
+  alarm_name = "${each.key}_alarm"
   comparison_operator = var.comparison_operator
   evaluation_periods = var.evaluation_periods
-  metric_name = "NetworkOut"
+  metric_name = "${each.key}"
   namespace = var.namespace
   period = var.period
   statistic = var.statistic
   threshold = var.threshold
-  alarm_description = "EC2 high network-out metric alarm"
+  alarm_description = "EC2 ${each.key} metric alarm"
 }
 
 output "alarms_out" {
   value = [
-    aws_cloudwatch_metric_alarm.high_cpu.alarm_name,
-    aws_cloudwatch_metric_alarm.high_disk_read.alarm_name,
-    aws_cloudwatch_metric_alarm.high_net_out.alarm_name
-  ]
+    for v in aws_cloudwatch_metric_alarm.metric_alarms : v.alarm_name
+  ]  
 }

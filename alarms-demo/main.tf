@@ -2,6 +2,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
+module "alarm_module" {
+  source = "./alarms"
+}
+
 resource "aws_sns_topic" "alarm" {
   name = "high-cpu-topic"
 }
@@ -15,14 +19,16 @@ resource "aws_cloudwatch_composite_alarm" "ec2_alarm" {
 
   alarm_rule = "(ALARM(${module.alarm_module.alarms_out[0]}) OR ALARM(${module.alarm_module.alarms_out[1]})) AND OK(${module.alarm_module.alarms_out[2]})"
 
+  # actions_suppressor {
+  #   alarm            = "your_suppressor_alarm_name_goes_here"
+  #   extension_period = 10
+  #   wait_period      = 20
+  # }
+
   depends_on = [
     module.alarm_module,
     aws_sns_topic.alarm
   ]
-}
-
-module "alarm_module" {
-  source = "./alarms"
 }
 
 output "sns_out" {
