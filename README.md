@@ -9,6 +9,7 @@ For example:
 ```bash
 git clone https://github.com/kpatel55/terraform.git
 cd alarms-demo
+terraform init
 terraform apply
 ```
 
