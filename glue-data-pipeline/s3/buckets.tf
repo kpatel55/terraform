@@ -9,15 +9,15 @@ locals {
 }
 
 resource "aws_s3_bucket" "glue_source_bucket" {
-    bucket = "YOUR_BUCKET_NAME"
+    bucket = var.glue_source_bucket_name
 }
 
 resource "aws_s3_bucket" "glue_scripts_bucket" {
-    bucket = "YOUR_BUCKET_NAME"
+    bucket = var.glue_scripts_bucket_name
 }
 
 resource "aws_s3_bucket" "athena_query_bucket" {
-    bucket = "YOUR_BUCKET_NAME"
+    bucket = var.athena_query_bucket_name
 }
 
 resource "aws_s3_object" "directories" {
@@ -29,14 +29,14 @@ resource "aws_s3_object" "directories" {
 resource "aws_s3_object" "spark_script" {
     bucket   = aws_s3_bucket.glue_scripts_bucket.bucket
     key      = "csv-to-parquet.py"
-    source   = "YOUR_FILE_PATH"
+    source   = var.spark_script_path
 }
 
 resource "aws_s3_object" "csv_files" {
     for_each = local.file_names
     bucket   = aws_s3_bucket.glue_source_bucket.bucket
     key      = "csv-files/${each.key}"
-    source   = "YOUR_FILE_PATH"
+    source   = var.csv_files_path
 }
 
 output "s3_out" {
